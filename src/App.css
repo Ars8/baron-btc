@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  margin: 0;
 }
 
 .App-logo {
@@ -37,12 +38,19 @@
   }
 }
 
+.keys-block{
+	margin-top: 50px;
+}
+
 .apple-button{
+	position: fixed;
+	top: 10px;
 	cursor:pointer;
 	padding:3px 10px;
+	margin-bottom: 28px;
 	text-decoration:none;
 	color:#fff;
-	font-size:13px;
+	font-size:15px;
 	text-shadow:0 -1px 1px rgba(0,0,0,.3);
 	background-image:-webkit-linear-gradient(#52A8E8, #377AD0);
 	background-image:-moz-linear-gradient(0% 100% 90deg,#377AD0, #52A8E8);
@@ -69,4 +77,8 @@
 
 .apple-button-disabled{
 	cursor:not-allowed;
+}
+
+.address{
+	margin: 0;
 }

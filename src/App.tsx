@@ -48,10 +48,10 @@ function App() {
   }
 
   //console.log(btcKeys)
-  console.log(error)
+  //console.log(error)
   //console.log(countReq)
-  console.log(loading)
-  console.log(isLoaded)
+  //console.log(loading)
+  //console.log(isLoaded)
 
   
 
@@ -61,19 +61,19 @@ function App() {
       <div className="App">
         <header className="App-header">
           <button onClick={clickHandler} className={classButton} disabled={countReq > 2 ? true : false}>Request</button>
-          <div>
+          <div className='keys-block'>
             {
               btcKeys.map((key) => (
 
-                <div key={key.pkey}>{key.addr === undefined ? <p>something went wrong, please try again</p> : `address: ${key.addr}`}<hr /><br /></div>
+                <div className='address' key={key.pkey}>{key.addr === undefined ? <p className='address'>something went wrong, please try again</p> : `address: ${key.addr}`}<hr /><br /></div>
               
               ))
             }
           </div>
           <div>
             {
-              loading.map((i) => (
-                <div key={i}>...Loading...</div>
+              loading.map((index) => (
+                <div key={index}>...Loading...</div>
               ))              
             }
           </div>
