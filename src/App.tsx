@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import * as uuid from 'uuid';
 import './App.css';
+import LoadingSpinner from './LoadingSpinner';
 
 interface BtcKey {
   addr: string,
@@ -12,14 +14,13 @@ function App() {
   const [error, setError] = useState(null)
   const [btcKeys, setBtcKeys] = useState<BtcKey[]>([])
   const [loading, setLoading] = useState<number[]>([])
-  const [isLoaded, setIsLoaded] = useState(true)
 
   let classButton = countReq > 2 ? 'apple-button apple-button-disabled' : 'apple-button'
 
 
   function clickHandler() {
+    setError(null)
     setCountReq(prev => prev + 1)
-    setIsLoaded(false)
     setLoading(prev => [...prev, 1])
 
     fetch('http://btcaddr.ru/btcaddr.php', {
@@ -35,49 +36,58 @@ function App() {
           addr: response.addr,
           pkey: response.pkey,
         },
-      ])))
+      ])),
+      (error) => {
+        setError(error)
+        console.log(error.message)
+      }
+      )
       .catch((error) => {
         setError(error)
-        console.log(error)
+        console.log(error.message)
       })
       .finally(() => {
-        setIsLoaded(true)
         setCountReq(prev => prev - 1)
-        setLoading(prevTasks => prevTasks.slice(0, prevTasks.length-1))
+        setLoading(prevTasks => prevTasks.slice(0, prevTasks.length - 1))
       });
   }
-
-  //console.log(btcKeys)
-  //console.log(error)
-  //console.log(countReq)
-  //console.log(loading)
-  //console.log(isLoaded)
-
-  
-
 
   return (
     <>
       <div className="App">
         <header className="App-header">
-          <button onClick={clickHandler} className={classButton} disabled={countReq > 2 ? true : false}>Request</button>
+          <button onClick={clickHandler} className={classButton} disabled={countReq > 2 ? true : false}>
+            Fetch address
+          </button>
           <div className='keys-block'>
-            {
+            {!error
+            ?
               btcKeys.map((key) => (
 
-                <div className='address' key={key.pkey}>{key.addr === undefined ? <p className='address'>something went wrong, please try again</p> : `address: ${key.addr}`}<hr /><br /></div>
-              
+                <div className='address' key={uuid.v4()}>
+                  {
+                    (key.addr === undefined)
+                      ?
+                      (<p className='address'>something went wrong, please try again</p>)
+                      :
+                      (`address: ${key.addr}`)
+                  }
+                  <hr />
+                  <br />
+                </div>
+
               ))
+              :
+              <p className='address'>Sorry,big fail, please try again</p>
             }
           </div>
           <div>
             {
-              loading.map((index) => (
-                <div key={index}>...Loading...</div>
-              ))              
+              loading.map(() => (
+                <LoadingSpinner key={uuid.v4()} />
+              ))
             }
           </div>
-
         </header>
       </div>
     </>
